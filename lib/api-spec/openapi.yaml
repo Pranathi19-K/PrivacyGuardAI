@@ -10,6 +10,14 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: auth
+    description: User sessions
+  - name: scans
+    description: Private document scanning and masking
+  - name: rules
+    description: User-configured detection rules
+  - name: dashboard
+    description: Dashboard and activity summaries
 paths:
   /healthz:
     get:
@@ -24,6 +32,304 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /auth/register:
+    post:
+      operationId: registerUser
+      tags: [auth]
+      summary: Create an account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterInput"
+      responses:
+        "201":
+          description: Account created and session cookie set
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthUser"
+  /auth/login:
+    post:
+      operationId: loginUser
+      tags: [auth]
+      summary: Sign in
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginInput"
+      responses:
+        "200":
+          description: Signed in and session cookie set
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthUser"
+  /auth/logout:
+    post:
+      operationId: logoutUser
+      tags: [auth]
+      summary: End the current session
+      responses:
+        "204":
+          description: Session ended
+  /auth/me:
+    get:
+      operationId: getCurrentUser
+      tags: [auth]
+      summary: Get the current user
+      responses:
+        "200":
+          description: Current authenticated user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthUser"
+  /dashboard:
+    get:
+      operationId: getDashboard
+      tags: [dashboard]
+      summary: Get dashboard metrics and recent scans
+      responses:
+        "200":
+          description: Dashboard summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardSummary"
+  /samples:
+    get:
+      operationId: listSampleDocuments
+      tags: [scans]
+      summary: List synthetic sample documents
+      responses:
+        "200":
+          description: Synthetic documents for trying the scanner
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SampleDocument"
+  /scans:
+    get:
+      operationId: listScans
+      tags: [scans]
+      summary: List the current user's scan history
+      responses:
+        "200":
+          description: Scan history
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ScanSummary"
+    post:
+      operationId: createScan
+      tags: [scans]
+      summary: Upload and analyze a PDF or TXT document
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/ScanUpload"
+      responses:
+        "201":
+          description: Findings ready for review
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ScanReview"
+  /scans/{scanId}:
+    parameters:
+      - name: scanId
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: getScan
+      tags: [scans]
+      summary: Get a saved scan and its masked output
+      responses:
+        "200":
+          description: Saved scan detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ScanDetail"
+    delete:
+      operationId: deleteScan
+      tags: [scans]
+      summary: Delete a scan and its masked output
+      responses:
+        "204":
+          description: Scan deleted
+  /scans/{scanId}/finalize:
+    parameters:
+      - name: scanId
+        in: path
+        required: true
+        schema:
+          type: string
+    post:
+      operationId: finalizeScan
+      tags: [scans]
+      summary: Apply reviewed masks and save the sanitized document
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FinalizeScanInput"
+      responses:
+        "200":
+          description: Finalized scan
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ScanDetail"
+  /scans/{scanId}/download:
+    parameters:
+      - name: scanId
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: downloadMaskedDocument
+      tags: [scans]
+      summary: Download the saved masked TXT document
+      responses:
+        "200":
+          description: Masked plain-text document
+          content:
+            text/plain:
+              schema:
+                type: string
+  /scans/{scanId}/report:
+    parameters:
+      - name: scanId
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: downloadPrivacyReport
+      tags: [scans]
+      summary: Download a privacy analysis report
+      responses:
+        "200":
+          description: Plain-text privacy analysis report
+          content:
+            text/plain:
+              schema:
+                type: string
+  /scans/{scanId}/assistant:
+    parameters:
+      - name: scanId
+        in: path
+        required: true
+        schema:
+          type: string
+    post:
+      operationId: askPrivacyAssistant
+      tags: [scans]
+      summary: Ask Gemini about scan findings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AssistantQuestion"
+      responses:
+        "200":
+          description: Assistant answer based only on scan metadata
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssistantAnswer"
+  /rules:
+    get:
+      operationId: listRules
+      tags: [rules]
+      summary: List the current user's custom detection rules
+      responses:
+        "200":
+          description: Custom detection rules
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DetectionRule"
+    post:
+      operationId: createRule
+      tags: [rules]
+      summary: Add a custom pattern detection rule
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DetectionRuleInput"
+      responses:
+        "201":
+          description: Rule created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DetectionRule"
+  /rules/{ruleId}:
+    parameters:
+      - name: ruleId
+        in: path
+        required: true
+        schema:
+          type: string
+    delete:
+      operationId: deleteRule
+      tags: [rules]
+      summary: Delete a custom detection rule
+      responses:
+        "204":
+          description: Rule deleted
+  /audit:
+    get:
+      operationId: listAuditRecords
+      tags: [dashboard]
+      summary: List the current user's recent audit events
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 50
+      responses:
+        "200":
+          description: Audit events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AuditRecord"
+  /account:
+    delete:
+      operationId: deleteAccount
+      tags: [auth]
+      summary: Permanently delete the account and its stored data
+      responses:
+        "204":
+          description: Account and owned data deleted
 components:
   schemas:
     HealthStatus:
@@ -33,4 +339,195 @@ components:
           type: string
       required:
         - status
+    RegisterInput:
+      type: object
+      required: [name, email, password]
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 80
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        password:
+          type: string
+          minLength: 10
+          maxLength: 128
+    LoginInput:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        password:
+          type: string
+          minLength: 1
+          maxLength: 128
+    AuthUser:
+      type: object
+      required: [id, name, email]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        email: { type: string, format: email }
+    RiskLevel:
+      type: string
+      enum: [low, medium, high]
+    FindingType:
+      type: string
+      enum: [email, phone, id_number, credit_card, name, custom]
+    Finding:
+      type: object
+      required: [id, type, label, value, preview, start, end, confidence, selected, maskWith]
+      properties:
+        id: { type: string }
+        type: { $ref: "#/components/schemas/FindingType" }
+        label: { type: string }
+        value: { type: string }
+        preview: { type: string }
+        start: { type: integer }
+        end: { type: integer }
+        confidence: { type: number, minimum: 0, maximum: 1 }
+        selected: { type: boolean }
+        maskWith: { type: [string, "null"] }
+    FindingCount:
+      type: object
+      required: [type, label, count]
+      properties:
+        type: { $ref: "#/components/schemas/FindingType" }
+        label: { type: string }
+        count: { type: integer }
+    ScanSummary:
+      type: object
+      required: [id, filename, format, createdAt, status, findingsCount, riskScore, riskLevel]
+      properties:
+        id: { type: string }
+        filename: { type: string }
+        format: { type: string, enum: [pdf, txt] }
+        createdAt: { type: string, format: date-time }
+        status: { type: string, enum: [pending_review, completed, expired] }
+        findingsCount: { type: integer }
+        riskScore: { type: integer, minimum: 0, maximum: 100 }
+        riskLevel: { $ref: "#/components/schemas/RiskLevel" }
+        maskedAt: { type: [string, "null"], format: date-time }
+    ScanDetail:
+      allOf:
+        - $ref: "#/components/schemas/ScanSummary"
+        - type: object
+          required: [riskExplanation, findingCounts, maskedText, selectedCount]
+          properties:
+            riskExplanation: { type: string }
+            findingCounts:
+              type: array
+              items:
+                $ref: "#/components/schemas/FindingCount"
+            maskedText: { type: string }
+            selectedCount: { type: integer }
+    ScanReview:
+      type: object
+      required: [id, filename, format, createdAt, originalText, maskedText, findings, riskScore, riskLevel, riskExplanation]
+      properties:
+        id: { type: string }
+        filename: { type: string }
+        format: { type: string, enum: [pdf, txt] }
+        createdAt: { type: string, format: date-time }
+        originalText: { type: string }
+        maskedText: { type: string }
+        findings:
+          type: array
+          items:
+            $ref: "#/components/schemas/Finding"
+        riskScore: { type: integer, minimum: 0, maximum: 100 }
+        riskLevel: { $ref: "#/components/schemas/RiskLevel" }
+        riskExplanation: { type: string }
+    ScanUpload:
+      type: object
+      required: [file]
+      properties:
+        file:
+          type: string
+          format: binary
+        detectNames:
+          type: boolean
+          default: false
+    FinalizeScanInput:
+      type: object
+      required: [selectedFindingIds, maskStyle]
+      properties:
+        selectedFindingIds:
+          type: array
+          items: { type: string }
+        maskStyle:
+          type: string
+          enum: [redact, category, partial]
+    SampleDocument:
+      type: object
+      required: [id, title, description, filename, format, content]
+      properties:
+        id: { type: string }
+        title: { type: string }
+        description: { type: string }
+        filename: { type: string }
+        format: { type: string, enum: [txt] }
+        content: { type: string }
+    DetectionRule:
+      type: object
+      required: [id, label, pattern, maskWith, enabled, createdAt]
+      properties:
+        id: { type: string }
+        label: { type: string, maxLength: 60 }
+        pattern: { type: string, maxLength: 200 }
+        maskWith: { type: string, maxLength: 50 }
+        enabled: { type: boolean }
+        createdAt: { type: string, format: date-time }
+    DetectionRuleInput:
+      type: object
+      required: [label, pattern, maskWith]
+      properties:
+        label: { type: string, minLength: 1, maxLength: 60 }
+        pattern: { type: string, minLength: 1, maxLength: 200 }
+        maskWith: { type: string, minLength: 1, maxLength: 50 }
+    AssistantQuestion:
+      type: object
+      required: [question]
+      properties:
+        question: { type: string, minLength: 1, maxLength: 1000 }
+    AssistantAnswer:
+      type: object
+      required: [answer, privacyNote]
+      properties:
+        answer: { type: string }
+        privacyNote: { type: string }
+    AuditRecord:
+      type: object
+      required: [id, action, scanId, detail, createdAt]
+      properties:
+        id: { type: string }
+        action: { type: string }
+        scanId: { type: [string, "null"] }
+        detail: { type: string }
+        createdAt: { type: string, format: date-time }
+    DashboardSummary:
+      type: object
+      required: [totalScans, completedScans, pendingReviews, totalFindings, riskCounts, recentScans]
+      properties:
+        totalScans: { type: integer }
+        completedScans: { type: integer }
+        pendingReviews: { type: integer }
+        totalFindings: { type: integer }
+        riskCounts:
+          type: object
+          required: [low, medium, high]
+          properties:
+            low: { type: integer }
+            medium: { type: integer }
+            high: { type: integer }
+        recentScans:
+          type: array
+          items:
+            $ref: "#/components/schemas/ScanSummary"
 
