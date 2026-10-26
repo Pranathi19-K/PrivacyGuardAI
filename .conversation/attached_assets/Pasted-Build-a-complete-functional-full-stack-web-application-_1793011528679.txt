@@ -1,0 +1,43 @@
+Build a complete, functional, full-stack web application named **PrivacyGuard AI — AI-Powered Sensitive Data Detection, Masking and Document Privacy Management System**.
+
+Do not build only a UI prototype. Implement the frontend, backend, database integration, core functionality, testing and deployment configuration.
+
+**Technology stack**
+- Frontend: React.js, Vite, Tailwind CSS
+- Backend: Node.js, Express.js
+- Database: MongoDB Atlas using Mongoose
+- Authentication: JWT and bcrypt
+- Generative AI: Google Gemini API
+- Document processing: PDF and TXT extraction libraries
+
+**Required features**
+1. Professional, responsive dashboard with royal-blue privacy and cybersecurity styling.
+2. User registration, login, logout and protected routes.
+3. PDF and TXT document upload with file validation.
+4. Backend sensitive data detection for emails, phone numbers, configured identification-number patterns and optional name detection.
+5. Configurable masking rules with user review and selection of detected items.
+6. Privacy risk score with Low, Medium and High risk categories and understandable explanations.
+7. Gemini-powered Privacy Assistant that explains findings and answers questions about scan results.
+8. Original-versus-masked text comparison.
+9. Downloadable masked documents and privacy analysis reports.
+10. Scan history, custom detection rules and audit records.
+11. Secure API endpoints, user-specific data access, input validation, rate limiting and safe error handling.
+12. Sample documents and test cases for demonstrating the application.
+
+**Privacy and security requirements**
+- Detect and mask sensitive values on the backend before sending any content to Gemini.
+- Never expose API keys or database credentials in frontend code.
+- Store secrets in environment variables.
+- Avoid permanently storing original documents unless necessary; implement appropriate retention and deletion controls.
+- Ensure masking removes sensitive content from the downloadable output rather than merely hiding it visually.
+- Clearly state that detection and risk scores are not guarantees of privacy or legal compliance.
+
+**Development instructions**
+- Create a clear frontend and backend project structure.
+- Implement real API connections and MongoDB persistence; do not use fake data for core features.
+- Provide an example .env file containing placeholder values only.
+- Run available checks, fix build errors, test the main workflows and report any remaining issues.
+- Include a README with setup, environment variables, testing and deployment instructions.
+- Configure the application for deployment and provide a public URL after successful publishing.
+
+Build the application in manageable stages, starting with the project structure and working foundation, then implement and verify each feature. Ask me to configure external API keys or database credentials when needed. Do not claim deployment or tests succeeded unless they actually did.
