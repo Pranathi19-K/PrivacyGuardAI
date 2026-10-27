@@ -19,8 +19,9 @@ The project uses the Replit pnpm workspace. Add these secrets in the Replit proj
 
 - `MONGODB_URI` — MongoDB Atlas connection URI for the application database.
 - `SESSION_SECRET` — long random signing secret for JWT session cookies.
+- `GEMINI_API_KEY` — Google Gemini API key, used when a Replit-managed Gemini integration is not connected.
 
-Gemini is accessed through Replit AI Integrations; no user-managed Gemini API key is needed. Gemini usage is billed to Replit credits. The required Gemini integration environment is already configured for this project.
+The app prefers a Replit-managed Gemini integration when its endpoint and credential are available. Otherwise, it uses the Google Gemini API key stored in Replit Secrets. Direct Gemini API usage is billed by Google according to the key's account.
 
 `.env.example` contains placeholders only. Do not commit real credentials.
 
@@ -37,4 +38,4 @@ The API tests cover PDF/TXT input validation, PII pattern detection, optional na
 
 ## Deployment
 
-Publish the app through Replit when it is ready. Confirm that `MONGODB_URI`, `SESSION_SECRET`, and the managed Gemini integration are available in the deployment environment. A public URL is available only after a successful publish.
+Publish the app through Replit when it is ready. Confirm that `MONGODB_URI`, `SESSION_SECRET`, and either the managed Gemini integration or `GEMINI_API_KEY` are available in the deployment environment. A public URL is available only after a successful publish.
