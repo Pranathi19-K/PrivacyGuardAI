@@ -1,0 +1,1 @@
+- [Gemini provider setup](gemini-provider.md) — direct Google Gemini API is the configured fallback when no Replit-managed Gemini endpoint is available.

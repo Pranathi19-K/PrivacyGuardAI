@@ -10,7 +10,7 @@ PrivacyGuard AI helps people find, review, and mask sensitive information in PDF
 - `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
 - `pnpm --filter @workspace/api-server run test` — run privacy detection and document-processing tests
-- Required secrets: `MONGODB_URI`, `SESSION_SECRET`; Gemini uses the managed Replit AI Integrations environment.
+- Required secrets: `MONGODB_URI`, `SESSION_SECRET`, and `GEMINI_API_KEY` unless a managed Gemini integration is provisioned.
 
 ## Stack
 
@@ -20,7 +20,7 @@ PrivacyGuard AI helps people find, review, and mask sensitive information in PDF
 - Persistence: MongoDB Atlas with Mongoose
 - Auth: bcrypt password hashes and JWTs in HTTP-only cookies
 - Document processing: in-memory Multer uploads and PDF.js text extraction
-- Assistant: Gemini through Replit AI Integrations
+- Assistant: Gemini through the managed Replit integration when configured, otherwise direct Google Gemini API
 - Build: Vite frontend and esbuild API bundle
 
 ## Where things live
