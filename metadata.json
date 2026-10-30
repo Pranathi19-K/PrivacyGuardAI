@@ -1,0 +1,6 @@
+{
+  "name": "MaskWise – Sensitive Data Masking & Privacy Platform",
+  "description": "PrivyShield AI: AI-Powered Sensitive Data Masking & Privacy Protection Platform with deterministic regex and algorithmic redactors, Gemini risk assessment, and MongoDB persistence.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
