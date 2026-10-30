@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { Header } from './components/layout/Header.tsx';
 import { Sidebar } from './components/layout/Sidebar.tsx';
 import { DashboardView } from './components/dashboard/DashboardView.tsx';
@@ -22,6 +22,8 @@ export default function App() {
 
   const [isAuthOpen, setIsAuthOpen] = useState(!getStoredToken());
   const [isMongoModalOpen, setIsMongoModalOpen] = useState(false);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+
   const [riskModalState, setRiskModalState] = useState<{
     isOpen: boolean;
     result: MaskResult | null;
@@ -106,6 +108,7 @@ export default function App() {
     setStats(null);
     setActiveView('dashboard');
     setIsMongoModalOpen(false);
+    setIsMobileSidebarOpen(false);
     setIsAuthOpen(true);
   };
 
@@ -119,7 +122,7 @@ export default function App() {
 
   if (isAuthChecking) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-950 text-white">
+      <div className="flex min-h-screen items-center justify-center bg-slate-950 text-white px-4">
         <div className="text-center space-y-3">
           <div className="mx-auto h-10 w-10 animate-spin rounded-full border-4 border-blue-300 border-t-transparent" />
           <p className="text-sm font-semibold">Verifying secure session...</p>
@@ -158,14 +161,16 @@ export default function App() {
   }
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-slate-50 font-sans text-slate-900 antialiased">
+    <div className="flex h-[100dvh] w-full overflow-hidden bg-slate-50 font-sans text-slate-900 antialiased">
       <Sidebar
         activeView={activeView}
         onSelectView={setActiveView}
         totalProtected={stats?.totalEntitiesProtected || 0}
+        isOpen={isMobileSidebarOpen}
+        onClose={() => setIsMobileSidebarOpen(false)}
       />
 
-      <div className="flex-1 flex flex-col h-full overflow-hidden">
+      <div className="min-w-0 flex-1 flex flex-col h-full overflow-hidden">
         <Header
           currentUser={currentUser}
           systemStatus={systemStatus}
@@ -173,10 +178,11 @@ export default function App() {
           onLogout={handleLogout}
           onOpenMongoConfig={() => setIsMongoModalOpen(true)}
           activeView={activeView}
+          onOpenMobileMenu={() => setIsMobileSidebarOpen(true)}
         />
 
-        <main className="flex-1 overflow-y-auto p-6 md:p-8">
-          <div className="max-w-7xl mx-auto">
+        <main className="flex-1 min-w-0 overflow-y-auto overflow-x-hidden p-3 sm:p-4 md:p-8">
+          <div className="w-full max-w-7xl mx-auto">
             {activeView === 'dashboard' && (
               <DashboardView
                 stats={stats}

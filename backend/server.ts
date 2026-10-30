@@ -1,4 +1,4 @@
-﻿import express from 'express';
+import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
@@ -59,11 +59,6 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
   app.use('/api/rules', rulesRoutes);
   app.use('/api/ai', aiRoutes);
   app.use('/api/system', systemRoutes);
-  app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:5173',
-  credentials: true
-}));
-
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`[PrivyShield AI API] Running on port ${PORT}`);
   });
