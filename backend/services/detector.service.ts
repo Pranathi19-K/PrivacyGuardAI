@@ -157,7 +157,7 @@ export class DeterministicDetector {
         });
       }
 
-      // Key-Value Secret Headers e.g. api_key="sk_live_..."
+      // Key-Value Secret Headers containing sensitive credentials
       const keyRegex = /\b(?:api[_-]?key|secret|token|auth_token|access_token|password)[\s:=]+["']?([a-zA-Z0-9_.~-]{16,64})["']?/gi;
       while ((match = keyRegex.exec(text)) !== null) {
         if (match[1]) {
