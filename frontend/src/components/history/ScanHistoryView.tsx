@@ -76,13 +76,13 @@ export const ScanHistoryView: React.FC<ScanHistoryViewProps> = ({
   return (
     <div className="space-y-6">
       {/* Top Header Card */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-xs p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-[#101f3b] rounded-xl border border-[#263e65] shadow-xs p-4 sm:p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <History className="w-5 h-5 text-blue-700" />
-            <h2 className="text-lg font-bold text-slate-900">Privacy Audit Ledger</h2>
+            <History className="w-5 h-5 text-cyan-300" />
+            <h2 className="text-lg font-bold text-slate-100">Privacy Audit Ledger</h2>
           </div>
-          <p className="text-xs text-slate-500 mt-1">
+          <p className="text-xs text-slate-400 mt-1">
             Tamper-evident log of masking operations. Raw sensitive data is omitted in accordance with data minimization standards.
           </p>
         </div>
@@ -90,18 +90,18 @@ export const ScanHistoryView: React.FC<ScanHistoryViewProps> = ({
         {/* Search */}
         <form onSubmit={handleSearchSubmit} className="flex items-center gap-2">
           <div className="relative">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+            <Search className="w-4 h-4 text-slate-500 absolute left-3 top-2.5" />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search title, filename..."
-              className="pl-9 pr-3 py-2 text-xs border border-slate-300 rounded-lg w-64 focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="pl-9 pr-3 py-2 text-xs border border-[#345078] rounded-lg w-full sm:w-64 bg-[#0a1830] text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400"
             />
           </div>
           <button
             type="submit"
-            className="px-3.5 py-2 bg-blue-700 hover:bg-blue-800 text-white text-xs font-semibold rounded-lg shadow-xs transition-colors cursor-pointer"
+            className="px-3.5 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold rounded-lg shadow-xs transition-colors cursor-pointer"
           >
             Filter
           </button>
@@ -109,24 +109,24 @@ export const ScanHistoryView: React.FC<ScanHistoryViewProps> = ({
       </div>
 
       {statusMessage && (
-        <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs rounded-lg flex items-center gap-2">
-          <CheckCircle className="w-4 h-4 text-emerald-600" />
+        <div className="p-3 bg-emerald-400/10 border border-emerald-400/30 text-emerald-300 text-xs rounded-lg flex items-center gap-2">
+          <CheckCircle className="w-4 h-4 text-emerald-400" />
           <span>{statusMessage}</span>
         </div>
       )}
 
       {/* Main Table */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+      <div className="bg-[#101f3b] rounded-xl border border-[#263e65] shadow-xs overflow-hidden">
         {loading ? (
-          <div className="py-16 text-center text-xs text-slate-400">Loading audit records...</div>
+          <div className="py-16 text-center text-xs text-slate-500">Loading audit records...</div>
         ) : audits.length === 0 ? (
-          <div className="py-16 text-center text-xs text-slate-400">
+          <div className="py-16 text-center text-xs text-slate-500">
             No audit records match your query.
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-xs">
-              <thead className="bg-slate-50 border-b border-slate-200 font-semibold text-slate-600">
+              <thead className="bg-[#142541] border-b border-[#263e65] font-semibold text-slate-400">
                 <tr>
                   <th className="py-3 px-4">Audit Record</th>
                   <th className="py-3 px-4">Type</th>
@@ -138,48 +138,48 @@ export const ScanHistoryView: React.FC<ScanHistoryViewProps> = ({
                   <th className="py-3 px-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-[#263e65]">
                 {audits.map((audit) => {
                   const id = audit._id || audit.id;
                   const isCritical = audit.riskLevel === 'critical' || audit.riskLevel === 'high';
                   return (
-                    <tr key={id} className="hover:bg-slate-50/80 transition-colors">
+                    <tr key={id} className="hover:bg-[#162a49] transition-colors">
                       <td className="py-3 px-4">
-                        <div className="font-semibold text-slate-900">{audit.title}</div>
+                        <div className="font-semibold text-slate-100">{audit.title}</div>
                         {audit.fileName && (
-                          <div className="text-[11px] font-mono text-slate-400">{audit.fileName}</div>
+                          <div className="text-[11px] font-mono text-slate-500">{audit.fileName}</div>
                         )}
                       </td>
                       <td className="py-3 px-4">
-                        <span className="font-mono uppercase text-slate-600">{audit.inputType}</span>
+                        <span className="font-mono uppercase text-slate-400">{audit.inputType}</span>
                       </td>
-                      <td className="py-3 px-4 font-mono font-bold text-slate-800">
+                      <td className="py-3 px-4 font-mono font-bold text-slate-200">
                         {audit.totalEntitiesDetected}
                       </td>
                       <td className="py-3 px-4">
                         <span
                           className={`inline-flex items-center gap-1 font-semibold ${
-                            isCritical ? 'text-rose-700' : 'text-slate-700'
+                            isCritical ? 'text-rose-300' : 'text-slate-300'
                           }`}
                         >
                           <span
                             className={`w-1.5 h-1.5 rounded-full ${
-                              isCritical ? 'bg-rose-600' : 'bg-emerald-600'
+                              isCritical ? 'bg-rose-500' : 'bg-emerald-600'
                             }`}
                           />
                           <span className="capitalize">{audit.riskLevel}</span>
-                          <span className="text-[11px] text-slate-400 font-mono">
+                          <span className="text-[11px] text-slate-500 font-mono">
                             ({audit.riskScore}/100)
                           </span>
                         </span>
                       </td>
-                      <td className="py-3 px-4 font-mono text-[11px] text-blue-700 font-semibold">
+                      <td className="py-3 px-4 font-mono text-[11px] text-cyan-300 font-semibold">
                         {audit.maskingStrategyUsed}
                       </td>
-                      <td className="py-3 px-4 text-slate-500 font-mono text-[11px]">
+                      <td className="py-3 px-4 text-slate-400 font-mono text-[11px]">
                         {audit.userEmail || 'session_user'}
                       </td>
-                      <td className="py-3 px-4 text-slate-400 font-mono text-[11px]">
+                      <td className="py-3 px-4 text-slate-500 font-mono text-[11px]">
                         {new Date(audit.createdAt).toLocaleString([], {
                           month: 'short',
                           day: 'numeric',
@@ -190,7 +190,7 @@ export const ScanHistoryView: React.FC<ScanHistoryViewProps> = ({
                       <td className="py-3 px-4 text-right space-x-1">
                         <button
                           onClick={() => setSelectedAudit(audit)}
-                          className="p-1.5 text-slate-500 hover:text-blue-700 hover:bg-blue-50 rounded-md transition-colors cursor-pointer"
+                          className="p-1.5 text-slate-400 hover:text-cyan-300 hover:bg-cyan-400/10 rounded-md transition-colors cursor-pointer"
                           title="View Audit Details"
                         >
                           <Eye className="w-4 h-4" />
@@ -198,7 +198,7 @@ export const ScanHistoryView: React.FC<ScanHistoryViewProps> = ({
                         {canDelete && (
                           <button
                             onClick={() => handleDelete(id!)}
-                            className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-md transition-colors cursor-pointer"
+                            className="p-1.5 text-slate-500 hover:text-rose-300 hover:bg-rose-400/10 rounded-md transition-colors cursor-pointer"
                             title="Delete Record (Admin / Compliance Role)"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -216,39 +216,39 @@ export const ScanHistoryView: React.FC<ScanHistoryViewProps> = ({
 
       {/* Audit Detail Modal */}
       {selectedAudit && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs">
-          <div className="bg-white rounded-xl max-w-2xl w-full p-6 shadow-2xl border border-slate-200 space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#020817]/85 backdrop-blur-xs">
+          <div className="bg-[#101f3b] rounded-xl max-w-2xl w-full max-h-[90dvh] overflow-y-auto p-4 sm:p-6 shadow-2xl border border-[#263e65] space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-[#263e65]">
               <div className="flex items-center gap-2">
-                <FileCode className="w-5 h-5 text-blue-700" />
-                <h3 className="text-base font-bold text-slate-900">Audit Ledger Record</h3>
+                <FileCode className="w-5 h-5 text-cyan-300" />
+                <h3 className="text-base font-bold text-slate-100">Audit Ledger Record</h3>
               </div>
               <button
                 onClick={() => setSelectedAudit(null)}
-                className="p-1 text-slate-400 hover:text-slate-700 rounded-md"
+                className="p-1 text-slate-500 hover:text-slate-300 rounded-md"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 text-xs">
-              <div className="p-3 bg-slate-50 rounded-lg">
-                <span className="text-slate-400 block">Session Title</span>
-                <span className="font-semibold text-slate-800">{selectedAudit.title}</span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <div className="p-3 bg-[#142541] rounded-lg">
+                <span className="text-slate-500 block">Session Title</span>
+                <span className="font-semibold text-slate-200">{selectedAudit.title}</span>
               </div>
-              <div className="p-3 bg-slate-50 rounded-lg">
-                <span className="text-slate-400 block">Masking Strategy</span>
-                <span className="font-mono font-semibold text-blue-700">
+              <div className="p-3 bg-[#142541] rounded-lg">
+                <span className="text-slate-500 block">Masking Strategy</span>
+                <span className="font-mono font-semibold text-cyan-300">
                   {selectedAudit.maskingStrategyUsed}
                 </span>
               </div>
-              <div className="p-3 bg-slate-50 rounded-lg">
-                <span className="text-slate-400 block">Execution Latency</span>
-                <span className="font-mono text-slate-700">{selectedAudit.executionTimeMs} ms</span>
+              <div className="p-3 bg-[#142541] rounded-lg">
+                <span className="text-slate-500 block">Execution Latency</span>
+                <span className="font-mono text-slate-300">{selectedAudit.executionTimeMs} ms</span>
               </div>
-              <div className="p-3 bg-slate-50 rounded-lg">
-                <span className="text-slate-400 block">Entities Shielded</span>
-                <span className="font-mono font-bold text-emerald-700">
+              <div className="p-3 bg-[#142541] rounded-lg">
+                <span className="text-slate-500 block">Entities Shielded</span>
+                <span className="font-mono font-bold text-emerald-300">
                   {selectedAudit.totalEntitiesDetected}
                 </span>
               </div>
@@ -256,12 +256,12 @@ export const ScanHistoryView: React.FC<ScanHistoryViewProps> = ({
 
             {/* Categories breakdown */}
             <div className="space-y-1.5 text-xs">
-              <span className="font-bold text-slate-700 block">Category Distribution</span>
+              <span className="font-bold text-slate-300 block">Category Distribution</span>
               <div className="flex flex-wrap gap-2">
                 {selectedAudit.categories?.map((cat, idx) => (
                   <span
                     key={idx}
-                    className="px-2.5 py-1 rounded bg-slate-100 border border-slate-200 font-mono text-[11px] text-slate-800"
+                    className="px-2.5 py-1 rounded bg-[#0a1830] border border-[#263e65] font-mono text-[11px] text-slate-200"
                   >
                     {cat.category}: <strong>{cat.count}</strong>
                   </span>
@@ -271,10 +271,10 @@ export const ScanHistoryView: React.FC<ScanHistoryViewProps> = ({
 
             {/* Masked Excerpt */}
             <div className="space-y-1.5 text-xs">
-              <span className="font-bold text-slate-700 block">
+              <span className="font-bold text-slate-300 block">
                 Sanitized Sample Excerpt (Zero Raw PII Retained)
               </span>
-              <div className="p-3 bg-slate-100/80 border border-slate-200 rounded-lg font-mono text-xs text-slate-800 whitespace-pre-wrap max-h-48 overflow-y-auto">
+              <div className="p-3 bg-[#0a1830] border border-[#263e65] rounded-lg font-mono text-xs text-slate-200 whitespace-pre-wrap max-h-48 overflow-y-auto">
                 {selectedAudit.maskedExcerpt || 'No excerpt available.'}
               </div>
             </div>
@@ -282,7 +282,7 @@ export const ScanHistoryView: React.FC<ScanHistoryViewProps> = ({
             <div className="pt-2 text-right">
               <button
                 onClick={() => setSelectedAudit(null)}
-                className="px-4 py-2 bg-slate-800 text-white text-xs font-semibold rounded-lg hover:bg-slate-900 transition-colors cursor-pointer"
+                className="px-4 py-2 bg-blue-700 text-white text-xs font-semibold rounded-lg hover:bg-blue-600 transition-colors cursor-pointer"
               >
                 Close
               </button>

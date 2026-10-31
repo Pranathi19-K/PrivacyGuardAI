@@ -85,38 +85,38 @@ export const PolicyRulesView: React.FC<PolicyRulesViewProps> = ({ currentUser })
   return (
     <div className="space-y-6">
       {/* Top Banner */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-xs p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-[#101f3b] rounded-xl border border-[#263e65] shadow-xs p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <Sliders className="w-5 h-5 text-blue-700" />
-            <h2 className="text-lg font-bold text-slate-900">Governance &amp; Masking Policies</h2>
+            <Sliders className="w-5 h-5 text-cyan-300" />
+            <h2 className="text-lg font-bold text-slate-100">Governance &amp; Masking Policies</h2>
           </div>
-          <p className="text-xs text-slate-500 mt-1">
+          <p className="text-xs text-slate-400 mt-1">
             Standardize data protection strategies across the organization. Changes dynamically propagate to all backend scanner requests.
           </p>
         </div>
 
         {!canEdit && (
-          <div className="p-2.5 bg-amber-50 border border-amber-200 text-amber-900 rounded-lg text-xs flex items-center gap-2">
-            <Info className="w-4 h-4 shrink-0 text-amber-700" />
+          <div className="p-2.5 bg-amber-400/10 border border-amber-400/30 text-amber-200 rounded-lg text-xs flex items-center gap-2">
+            <Info className="w-4 h-4 shrink-0 text-amber-300" />
             <span>Policy edits require Admin or Compliance Officer credentials.</span>
           </div>
         )}
       </div>
 
       {successMsg && (
-        <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs rounded-lg flex items-center gap-2">
+        <div className="p-3 bg-emerald-400/10 border border-emerald-400/30 text-emerald-300 text-xs rounded-lg flex items-center gap-2">
           <Check className="w-4 h-4 text-emerald-600" />
           <span>{successMsg}</span>
         </div>
       )}
 
       {/* Rules Grid */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+      <div className="bg-[#101f3b] rounded-xl border border-[#263e65] shadow-xs overflow-hidden">
         {loading ? (
-          <div className="py-16 text-center text-xs text-slate-400">Loading policy rules...</div>
+          <div className="py-16 text-center text-xs text-slate-500">Loading policy rules...</div>
         ) : (
-          <div className="divide-y divide-slate-100">
+          <div className="divide-y divide-[#263e65]">
             {rules.map((rule) => {
               const isBusy = savingId === rule.ruleId;
               const isCritical = rule.severity === 'critical';
@@ -126,37 +126,37 @@ export const PolicyRulesView: React.FC<PolicyRulesViewProps> = ({ currentUser })
                 <div
                   key={rule.ruleId}
                   className={`p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 transition-colors ${
-                    !rule.isEnabled ? 'bg-slate-50/60 opacity-60' : 'hover:bg-slate-50/40'
+                    !rule.isEnabled ? 'bg-[#0a1830] opacity-60' : 'hover:bg-[#142541]'
                   }`}
                 >
                   {/* Left: Info */}
                   <div className="space-y-1 max-w-xl">
                     <div className="flex items-center gap-2.5">
-                      <span className="font-mono text-xs text-slate-400 font-bold">
+                      <span className="font-mono text-xs text-slate-500 font-bold">
                         {rule.ruleId}
                       </span>
-                      <h3 className="text-sm font-bold text-slate-900">{rule.name}</h3>
+                      <h3 className="text-sm font-bold text-slate-100">{rule.name}</h3>
                       <span
                         className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded ${
                           isCritical
-                            ? 'bg-rose-100 text-rose-800'
+                            ? 'bg-rose-400/10 text-rose-300'
                             : isHigh
-                            ? 'bg-amber-100 text-amber-900'
-                            : 'bg-blue-100 text-blue-800'
+                            ? 'bg-amber-400/10 text-amber-200'
+                            : 'bg-cyan-400/10 text-cyan-200'
                         }`}
                       >
                         {rule.severity}
                       </span>
                     </div>
 
-                    <p className="text-xs text-slate-600 leading-normal">{rule.description}</p>
+                    <p className="text-xs text-slate-400 leading-normal">{rule.description}</p>
 
-                    <div className="flex items-center gap-2 text-[11px] text-slate-400 font-medium pt-1">
+                    <div className="flex items-center gap-2 text-[11px] text-slate-500 font-medium pt-1">
                       <span>Mapped Regulations:</span>
                       {rule.regulations?.map((reg: string) => (
                         <span
                           key={reg}
-                          className="px-1.5 py-0.5 bg-slate-100 text-slate-700 rounded text-[10px] font-mono border border-slate-200"
+                          className="px-1.5 py-0.5 bg-[#162a49] text-slate-300 rounded text-[10px] font-mono border border-[#263e65]"
                         >
                           {reg}
                         </span>
@@ -165,14 +165,14 @@ export const PolicyRulesView: React.FC<PolicyRulesViewProps> = ({ currentUser })
                   </div>
 
                   {/* Right: Strategy selector & Enable toggle */}
-                  <div className="flex items-center gap-3 shrink-0">
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
                     <select
                       value={rule.defaultStrategy}
                       disabled={!canEdit || isBusy || !rule.isEnabled}
                       onChange={(e) =>
                         handleUpdateStrategy(rule.ruleId, e.target.value as MaskingStrategy)
                       }
-                      className="bg-white border border-slate-300 rounded-lg px-3 py-1.5 text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-600 disabled:bg-slate-100"
+                      className="bg-[#0a1830] text-slate-100 border border-[#345078] rounded-lg px-3 py-1.5 text-xs font-medium text-slate-200 focus:outline-none focus:ring-2 focus:ring-cyan-400 disabled:bg-[#0a1830] disabled:opacity-60"
                     >
                       {STRATEGIES.map((s) => (
                         <option key={s.id} value={s.id}>
@@ -186,8 +186,8 @@ export const PolicyRulesView: React.FC<PolicyRulesViewProps> = ({ currentUser })
                       disabled={!canEdit || isBusy}
                       className={`px-3 py-1.5 text-xs font-semibold rounded-lg border transition-colors cursor-pointer ${
                         rule.isEnabled
-                          ? 'bg-emerald-50 text-emerald-800 border-emerald-300 hover:bg-emerald-100'
-                          : 'bg-slate-100 text-slate-600 border-slate-300 hover:bg-slate-200'
+                          ? 'bg-emerald-400/10 text-emerald-300 border-emerald-400/40 hover:bg-emerald-400/20'
+                          : 'bg-[#162a49] text-slate-400 border-[#345078] hover:bg-[#263e65]'
                       }`}
                     >
                       {isBusy ? 'Saving...' : rule.isEnabled ? 'Enabled' : 'Disabled'}

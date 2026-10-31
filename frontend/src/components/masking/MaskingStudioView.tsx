@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import {
   Lock,
   UploadCloud,
@@ -236,23 +236,23 @@ export const MaskingStudioView: React.FC<MaskingStudioViewProps> = ({
   return (
     <div className="space-y-6">
       {/* Configuration & Input Section */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-xs p-6 space-y-5">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+      <div className="bg-[#101f3b] rounded-xl border border-[#263e65] shadow-xs p-6 space-y-5">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-700">
           <div>
-            <h2 className="text-lg font-bold text-slate-900">Deterministic Masking Studio</h2>
-            <p className="text-xs text-slate-500">
+            <h2 className="text-lg font-bold text-slate-100">Deterministic Masking Studio</h2>
+            <p className="text-xs text-slate-400">
               Scan raw text or document files, identify sensitive tokens with regex/Luhn algorithms, and apply policy masking.
             </p>
           </div>
 
           {/* Mode Switcher */}
-          <div className="flex items-center gap-1 p-1 bg-slate-100 rounded-lg shrink-0">
+          <div className="flex items-center gap-1 p-1 bg-[#162a49] rounded-lg shrink-0">
             <button
               onClick={() => setInputMode('text')}
               className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-colors cursor-pointer ${
                 inputMode === 'text'
-                  ? 'bg-white text-blue-900 shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-[#101f3b] text-cyan-100 shadow-xs'
+                  : 'text-slate-400 hover:text-slate-100'
               }`}
             >
               Direct Text Input
@@ -261,8 +261,8 @@ export const MaskingStudioView: React.FC<MaskingStudioViewProps> = ({
               onClick={() => setInputMode('file')}
               className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-colors cursor-pointer ${
                 inputMode === 'file'
-                  ? 'bg-white text-blue-900 shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-[#101f3b] text-cyan-100 shadow-xs'
+                  : 'text-slate-400 hover:text-slate-100'
               }`}
             >
               Document Upload (.csv, .json, .txt, .log)
@@ -280,7 +280,7 @@ export const MaskingStudioView: React.FC<MaskingStudioViewProps> = ({
             <button
               key={sample.id}
               onClick={() => handleSelectSample(sample)}
-              className="px-2.5 py-1 rounded-md bg-slate-100 hover:bg-blue-50 hover:text-blue-700 text-slate-700 border border-slate-200 text-xs font-medium shrink-0 transition-colors cursor-pointer"
+              className="px-2.5 py-1 rounded-md bg-[#162a49] hover:bg-cyan-400/10 hover:text-cyan-300 text-slate-300 border border-[#263e65] text-xs font-medium shrink-0 transition-colors cursor-pointer"
             >
               {sample.name}
             </button>
@@ -290,7 +290,7 @@ export const MaskingStudioView: React.FC<MaskingStudioViewProps> = ({
         {/* Input Controls */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="md:col-span-2 space-y-1.5">
-            <label className="block text-xs font-semibold text-slate-700">
+            <label className="block text-xs font-semibold text-slate-300">
               Session Title / Reference Identifier
             </label>
             <input
@@ -298,18 +298,18 @@ export const MaskingStudioView: React.FC<MaskingStudioViewProps> = ({
               value={sessionTitle}
               onChange={(e) => setSessionTitle(e.target.value)}
               placeholder="e.g. Patient Onboarding Batch or Support Incident #420"
-              className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="w-full px-3 py-2 text-xs border border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400"
             />
           </div>
 
           <div className="space-y-1.5">
-            <label className="block text-xs font-semibold text-slate-700">
+            <label className="block text-xs font-semibold text-slate-300">
               Deterministic Masking Strategy
             </label>
             <select
               value={selectedStrategy}
               onChange={(e) => setSelectedStrategy(e.target.value as MaskingStrategy)}
-              className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 bg-white font-medium text-slate-800"
+              className="w-full px-3 py-2 text-xs border border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400 bg-[#101f3b] font-medium text-slate-200"
             >
               {STRATEGIES.map((strat) => (
                 <option key={strat.id} value={strat.id}>
@@ -323,8 +323,8 @@ export const MaskingStudioView: React.FC<MaskingStudioViewProps> = ({
         {/* Main Input Area */}
         {inputMode === 'text' ? (
           <div className="space-y-1.5">
-            <div className="flex items-center justify-between text-xs text-slate-500">
-              <span className="font-semibold text-slate-700">Sensitive Payload Input (UTF-8 Plaintext)</span>
+            <div className="flex items-center justify-between text-xs text-slate-400">
+              <span className="font-semibold text-slate-300">Sensitive Payload Input (UTF-8 Plaintext)</span>
               <span className="font-mono">{inputText.length} characters</span>
             </div>
             <textarea
@@ -332,18 +332,18 @@ export const MaskingStudioView: React.FC<MaskingStudioViewProps> = ({
               onChange={(e) => setInputText(e.target.value)}
               rows={8}
               placeholder="Paste sensitive text, customer support logs, intake forms, or API payloads here..."
-              className="w-full p-3 font-mono text-xs border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 bg-slate-50/50 text-slate-800 leading-relaxed"
+              className="w-full p-3 font-mono text-xs border border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400 bg-[#0a1830] text-slate-200 leading-relaxed"
             />
           </div>
         ) : (
           <div className="space-y-3">
-            <div className="border-2 border-dashed border-slate-300 rounded-xl p-8 text-center hover:border-blue-500 transition-colors bg-slate-50/50">
-              <UploadCloud className="w-10 h-10 text-blue-600 mx-auto mb-2" />
-              <div className="text-sm font-semibold text-slate-800">
+            <div className="border-2 border-dashed border-slate-600 rounded-xl p-8 text-center hover:border-blue-500 transition-colors bg-[#0a1830]">
+              <UploadCloud className="w-10 h-10 text-cyan-300 mx-auto mb-2" />
+              <div className="text-sm font-semibold text-slate-200">
                 Choose text-based document to scan
               </div>
-              <p className="text-xs text-slate-500 mt-1">
-                Supported formats: <code className="font-mono text-blue-700">.txt, .csv, .json, .log, .md, .tsv</code> (Max 2MB)
+              <p className="text-xs text-slate-400 mt-1">
+                Supported formats: <code className="font-mono text-cyan-300">.txt, .csv, .json, .log, .md, .tsv</code> (Max 2MB)
               </p>
               <input
                 type="file"
@@ -359,17 +359,17 @@ export const MaskingStudioView: React.FC<MaskingStudioViewProps> = ({
               />
               <label
                 htmlFor="file-upload"
-                className="mt-4 inline-flex items-center gap-1.5 px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white text-xs font-semibold rounded-lg cursor-pointer shadow-xs transition-colors"
+                className="mt-4 inline-flex items-center gap-1.5 px-4 py-2 bg-blue-600 hover:bg-cyan-400/100 text-white text-xs font-semibold rounded-lg cursor-pointer shadow-xs transition-colors"
               >
                 <FileText className="w-4 h-4" />
                 <span>Select Document</span>
               </label>
 
               {selectedFile && (
-                <div className="mt-3 p-2 bg-blue-50 border border-blue-200 rounded-lg inline-flex items-center gap-2 text-xs font-mono text-blue-900">
-                  <FileCode className="w-4 h-4 text-blue-700" />
+                <div className="mt-3 p-2 bg-cyan-400/10 border border-cyan-400/30 rounded-lg inline-flex items-center gap-2 text-xs font-mono text-cyan-100">
+                  <FileCode className="w-4 h-4 text-cyan-300" />
                   <span className="font-bold">{selectedFile.name}</span>
-                  <span className="text-blue-600">({Math.round(selectedFile.size / 1024)} KB)</span>
+                  <span className="text-cyan-300">({Math.round(selectedFile.size / 1024)} KB)</span>
                 </div>
               )}
             </div>
@@ -385,7 +385,7 @@ export const MaskingStudioView: React.FC<MaskingStudioViewProps> = ({
 
         {/* Process Button */}
         <div className="flex items-center justify-between pt-2">
-          <div className="text-[11px] text-slate-500 flex items-center gap-1.5">
+          <div className="text-[11px] text-slate-400 flex items-center gap-1.5">
             <ShieldCheck className="w-4 h-4 text-emerald-600" />
             <span>Zero raw data retention: Original content is discarded once session completes.</span>
           </div>
@@ -393,7 +393,7 @@ export const MaskingStudioView: React.FC<MaskingStudioViewProps> = ({
           <button
             onClick={inputMode === 'text' ? handleProcessText : handleProcessFile}
             disabled={isLoading}
-            className="px-5 py-2.5 bg-blue-700 hover:bg-blue-800 disabled:bg-slate-300 text-white text-xs font-bold rounded-lg shadow-sm flex items-center gap-2 transition-all cursor-pointer"
+            className="px-5 py-2.5 bg-blue-600 hover:bg-cyan-400/100 disabled:bg-slate-300 text-white text-xs font-bold rounded-lg shadow-sm flex items-center gap-2 transition-all cursor-pointer"
           >
             {isLoading ? (
               <>
@@ -413,11 +413,11 @@ export const MaskingStudioView: React.FC<MaskingStudioViewProps> = ({
       {/* Masked Output Section */}
       {result && (
         <div className="space-y-6">
-          <div className="bg-white rounded-xl border border-slate-200 shadow-xs p-6 space-y-4">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+          <div className="bg-[#101f3b] rounded-xl border border-[#263e65] shadow-xs p-6 space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-700">
               <div className="flex items-center gap-2">
-                <div className="w-2.5 h-2.5 rounded-full bg-emerald-500"></div>
-                <h3 className="text-sm font-bold text-slate-900">Masked Output &amp; Protection Report</h3>
+                <div className="w-2.5 h-2.5 rounded-full bg-emerald-400/100"></div>
+                <h3 className="text-sm font-bold text-slate-100">Masked Output &amp; Protection Report</h3>
                 <span className="text-xs font-mono text-slate-400">({result.statistics.executionTimeMs}ms)</span>
               </div>
 
@@ -425,7 +425,7 @@ export const MaskingStudioView: React.FC<MaskingStudioViewProps> = ({
               <div className="flex flex-wrap items-center gap-2">
                 <button
                   onClick={handleCopyMasked}
-                  className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-md flex items-center gap-1.5 transition-colors cursor-pointer"
+                  className="px-3 py-1.5 bg-[#162a49] hover:bg-[#263e65] text-slate-300 text-xs font-semibold rounded-md flex items-center gap-1.5 transition-colors cursor-pointer"
                 >
                   {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
                   <span>{copied ? 'Copied!' : 'Copy Masked Text'}</span>
@@ -433,7 +433,7 @@ export const MaskingStudioView: React.FC<MaskingStudioViewProps> = ({
 
                 <button
                   onClick={handleDownloadMasked}
-                  className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-md flex items-center gap-1.5 transition-colors cursor-pointer"
+                  className="px-3 py-1.5 bg-[#162a49] hover:bg-[#263e65] text-slate-300 text-xs font-semibold rounded-md flex items-center gap-1.5 transition-colors cursor-pointer"
                 >
                   <Download className="w-3.5 h-3.5" />
                   <span>Download Text</span>
@@ -441,7 +441,7 @@ export const MaskingStudioView: React.FC<MaskingStudioViewProps> = ({
 
                 <button
                   onClick={handleExportAuditJson}
-                  className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-md flex items-center gap-1.5 transition-colors cursor-pointer"
+                  className="px-3 py-1.5 bg-[#162a49] hover:bg-[#263e65] text-slate-300 text-xs font-semibold rounded-md flex items-center gap-1.5 transition-colors cursor-pointer"
                 >
                   <FileCode className="w-3.5 h-3.5 text-indigo-600" />
                   <span>Export Audit JSON</span>
@@ -449,7 +449,7 @@ export const MaskingStudioView: React.FC<MaskingStudioViewProps> = ({
 
                 <button
                   onClick={() => onOpenRiskModal(result, sessionOriginalText)}
-                  className="px-3.5 py-1.5 bg-blue-700 hover:bg-blue-800 text-white text-xs font-bold rounded-md flex items-center gap-1.5 shadow-xs transition-colors cursor-pointer"
+                  className="px-3.5 py-1.5 bg-blue-600 hover:bg-cyan-400/100 text-white text-xs font-bold rounded-md flex items-center gap-1.5 shadow-xs transition-colors cursor-pointer"
                 >
                   <Sparkles className="w-3.5 h-3.5 text-blue-200" />
                   <span>Evaluate Regulatory Risks (Gemini)</span>
@@ -458,10 +458,10 @@ export const MaskingStudioView: React.FC<MaskingStudioViewProps> = ({
             </div>
 
             {/* Quick Metrics Banner */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-3 bg-slate-50 rounded-lg text-xs">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-3 bg-[#0a1830] rounded-lg text-xs">
               <div>
                 <span className="text-slate-400 block">Entities Found</span>
-                <span className="font-mono font-bold text-slate-900 text-sm">
+                <span className="font-mono font-bold text-slate-100 text-sm">
                   {result.entitiesCount} items
                 </span>
               </div>
@@ -471,7 +471,7 @@ export const MaskingStudioView: React.FC<MaskingStudioViewProps> = ({
                   className={`font-semibold capitalize text-sm ${
                     result.statistics.riskLevel === 'critical' || result.statistics.riskLevel === 'high'
                       ? 'text-rose-700'
-                      : 'text-slate-800'
+                      : 'text-slate-200'
                   }`}
                 >
                   {result.statistics.riskLevel} ({result.statistics.riskScore}/100)
@@ -479,13 +479,13 @@ export const MaskingStudioView: React.FC<MaskingStudioViewProps> = ({
               </div>
               <div>
                 <span className="text-slate-400 block">Strategy Deployed</span>
-                <span className="font-mono font-medium text-slate-800 text-xs">
+                <span className="font-mono font-medium text-slate-200 text-xs">
                   {selectedStrategy}
                 </span>
               </div>
               <div>
                 <span className="text-slate-400 block">Audit Record</span>
-                <span className="font-mono text-slate-500 text-[11px] truncate block">
+                <span className="font-mono text-slate-400 text-[11px] truncate block">
                   #{result.auditId || 'session-local'}
                 </span>
               </div>
@@ -495,30 +495,30 @@ export const MaskingStudioView: React.FC<MaskingStudioViewProps> = ({
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               {/* Original Preview (Session Only) */}
               <div className="space-y-1">
-                <div className="flex items-center justify-between text-xs text-slate-500">
-                  <span className="font-semibold text-slate-600">
+                <div className="flex items-center justify-between text-xs text-slate-400">
+                  <span className="font-semibold text-slate-400">
                     Original Payload (Session-Only View)
                   </span>
                   <span className="text-[11px] text-amber-700 bg-amber-50 px-1.5 py-0.2 rounded border border-amber-200">
                     Ephemeral Session
                   </span>
                 </div>
-                <div className="p-3 bg-slate-100/70 border border-slate-200 rounded-lg font-mono text-xs text-slate-800 whitespace-pre-wrap h-64 overflow-y-auto leading-relaxed">
+                <div className="p-3 bg-[#162a49]/70 border border-[#263e65] rounded-lg font-mono text-xs text-slate-200 whitespace-pre-wrap h-64 overflow-y-auto leading-relaxed">
                   {sessionOriginalText}
                 </div>
               </div>
 
               {/* Masked Output */}
               <div className="space-y-1">
-                <div className="flex items-center justify-between text-xs text-slate-500">
-                  <span className="font-semibold text-emerald-800">
+                <div className="flex items-center justify-between text-xs text-slate-400">
+                  <span className="font-semibold text-emerald-300">
                     Deterministic Masked Payload (Ready for Distribution)
                   </span>
-                  <span className="text-[11px] text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200">
+                  <span className="text-[11px] text-emerald-700 bg-emerald-400/10 px-1.5 py-0.2 rounded border border-emerald-200">
                     Redacted
                   </span>
                 </div>
-                <div className="p-3 bg-white border border-emerald-300 rounded-lg font-mono text-xs text-slate-900 whitespace-pre-wrap h-64 overflow-y-auto leading-relaxed selection:bg-emerald-200">
+                <div className="p-3 bg-[#101f3b] border border-emerald-400/40 rounded-lg font-mono text-xs text-slate-100 whitespace-pre-wrap h-64 overflow-y-auto leading-relaxed selection:bg-emerald-200">
                   {result.maskedText}
                 </div>
               </div>
@@ -535,4 +535,3 @@ export const MaskingStudioView: React.FC<MaskingStudioViewProps> = ({
     </div>
   );
 };
-
